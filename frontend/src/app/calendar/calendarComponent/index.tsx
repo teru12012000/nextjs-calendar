@@ -4,11 +4,12 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import { getSchedule } from "@/api/calendar";
 import interactionPlugin,{ DateClickArg } from "@fullcalendar/interaction/index.js";
 import FullCalendar from "@fullcalendar/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import useSWR from "swr";
 const CalendarComponent = () => {
     const {data,isLoading}=useSWR('http://localhost:5050/schedule/initialData',getSchedule);
     const calendarRef = useRef(null);
+    const [isOpend,setIsOpened]=useState<boolean>(false);
     return (
         <div style={{margin:20,}}>
             <FullCalendar
@@ -52,6 +53,7 @@ const CalendarComponent = () => {
                     left:""
                 }}
             />
+            
     </div>
 )}
 export default CalendarComponent;
