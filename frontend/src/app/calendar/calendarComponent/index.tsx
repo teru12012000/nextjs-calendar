@@ -6,20 +6,30 @@ import interactionPlugin,{ DateClickArg } from "@fullcalendar/interaction/index.
 import FullCalendar from "@fullcalendar/react";
 import { useRef, useState } from "react";
 import useSWR from "swr";
+import ModalWindow from "../modalWindow";
+import { EventClickArg } from "@fullcalendar/core/index.js";
 const CalendarComponent = () => {
     const {data,isLoading}=useSWR('http://localhost:5050/schedule/initialData',getSchedule);
     const calendarRef = useRef(null);
     const [isOpend,setIsOpened]=useState<boolean>(false);
+    const [arg,setArg]=useState<DateClickArg|EventClickArg|undefined>(undefined);
+    const [isCreate,setIsCreate]=useState<boolean>(true);
     return (
         <div style={{margin:20,}}>
             <FullCalendar
                 nowIndicator={true}
                 ref={calendarRef}
-                eventClick={(info) =>
-                    console.log(info.event.extendedProps, info.event.title)
+                eventClick={(info:EventClickArg) =>{
+                        setIsOpened(true);
+                        setIsCreate(false);
+                        setArg(info);
+                        console.log(info.event.extendedProps, info.event.title)
+                    }
                 }
                 dateClick={(arg:DateClickArg)=>{
-                    console.log(arg);
+                    setIsOpened(true);
+                    setIsCreate(true);
+                    setArg(arg);
                 }}
                 editable={true}
                 views={{
@@ -53,7 +63,12 @@ const CalendarComponent = () => {
                     left:""
                 }}
             />
-            
+            <ModalWindow
+                isOpened={isOpend}
+                setIsOpened={setIsOpened}
+                setArg={setArg}
+                isCreate={isCreate}
+            />
     </div>
 )}
 export default CalendarComponent;

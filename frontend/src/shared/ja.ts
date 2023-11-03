@@ -5,5 +5,12 @@ export default{
         pageRouting:{
             calendar:"カレンダーのページへ",
         },
+    },
+    calendar:{
+        modal:{
+            create:{
+                title:"予定追加",
+            }
+        }
     }
 }
